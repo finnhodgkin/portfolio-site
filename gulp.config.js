@@ -13,7 +13,7 @@ module.exports = _ => {
     js: [
       '*.js'
     ],
-    sass: store + 'style.scss',
+    sass: store + '*.scss',
     temp: temp
   };
 

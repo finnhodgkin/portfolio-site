@@ -41,7 +41,7 @@ $wrapWidth: ($boxWidth * 4) + ($margin * 4);
 
 .box {
   width: $boxWidth;
-  height: 19vw;
+  height: $boxWidth;
   margin-top: $margin;
   margin-right: $margin;
   background-color: $colour2;
@@ -52,4 +52,8 @@ $wrapWidth: ($boxWidth * 4) + ($margin * 4);
   width: $bigWidth;
   background-color: $colour3;
   float: left;
+}
+
+.box:hover {
+  background-color: purple;
 }

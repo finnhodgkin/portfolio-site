@@ -38,58 +38,33 @@ gulp.task('clean-styles', () => {
 });
 
 gulp.task('browserSync', function() {
+
   browserSync.init({
     server: {
       baseDir: ''
     },
+    ghostMode: {
+        clicks: true,
+        forms: true,
+        scroll: true
+    },
+    browser: ['chrome', 'firefox', 'iexplore']
   });
 });
 
+gulp.task('inject', ['styles'], () => {
+  gulp.src('index.html')
+    .pipe($.inject(gulp.src(['./css/**/*.css', './js/**/*.js'], {read: false})))
+    .pipe(gulp.dest(''));
+});
+
 gulp.task('watcher', ['browserSync', 'styles'], () => {
-  gulp.watch([config.sass], ['styles']);
+  gulp.watch([config.sass], ['inject']);
   gulp.watch('*.html', browserSync.reload);
-  gulp.watch('*.js', browserSync.reload);
+  gulp.watch('*.js', ['vet'], browserSync.reload);
 });
 
 ///////////////
-function changeEvent(event) {
-  var srcPattern = new RegExp('/.*(?=/' + config.source + ')/');
-  log('File ' + event.path.replace(srcPattern, '') + ' ' + event.type);
-}
-
-function startBrowserSync () {
-  if(browserSync.active) {
-    return;
-  }
-
-  log('Starting browser-sync on port ' + port);
-
-  gulp.watch([config.less], ['styles'])
-    .on('change', (event) => { changeEvent(event); });
-
-  var options = {
-    proxy: 'localhost:' + port,
-    files: [
-      config.client + '**/*.*',
-      '!' + config.less,
-      config.temp + '**/*.css'
-    ],
-    ghostMode: {
-      clicks: true,
-      location: false,
-      forms: true,
-      scroll: true
-    },
-    injectChanges: true,
-    logFileChanges: true,
-    logLevel: 'debug',
-    logPrefix: 'gulp-patterns',
-    notify: true,
-    reloadDelay: 0
-  };
-
-  browserSync(options);
-}
 
 function clean(path) {
   log('Cleaning: ' + $.util.colors.blue(path));

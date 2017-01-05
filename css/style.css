@@ -29,7 +29,7 @@ blockquote:before, blockquote:after, q:before, q:after {
 
 .box {
   width: 20vw;
-  height: 19vw;
+  height: 20vw;
   margin-top: 1vw;
   margin-right: 1vw;
   background-color: purple;
@@ -39,3 +39,6 @@ blockquote:before, blockquote:after, q:before, q:after {
   width: 41vw;
   background-color: blue;
   float: left; }
+
+.box:hover {
+  background-color: purple; }
