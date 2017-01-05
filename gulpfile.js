@@ -19,14 +19,17 @@ gulp.task('vet', () => {
 });
 
 gulp.task('styles', ['clean-styles'], () => {
-  log('Compiling less to css');
+  log('Compiling sass to css');
 
   return gulp
-    .src(config.less)
+    .src(config.sass)
     .pipe($.plumber())
-    .pipe($.less())
+    .pipe($.sass())
     .pipe($.autoprefixer({browsers: ['last 2 version', '> 5%']}))
-    .pipe(gulp.dest(config.temp));
+    .pipe(gulp.dest(config.temp))
+    .pipe(browserSync.reload({
+      stream: true
+    }));
 });
 
 gulp.task('clean-styles', () => {
@@ -34,59 +37,18 @@ gulp.task('clean-styles', () => {
   clean(files);
 });
 
-gulp.task('less-watcher', () => {
-  gulp.watch([config.less], ['styles']);
-});
-
-gulp.task('wiredep', () => {
-  log('Wire up the bower css, js and app js into html');
-  var options = config.getWiredepDefaultOptions();
-  var wiredep = require('wiredep').stream;
-
-  return gulp
-    .src(config.index)
-    .pipe(wiredep(options))
-    .pipe($.inject(gulp.src(config.js)))
-    .pipe(gulp.dest(config.client));
-});
-
-gulp.task('inject', ['wiredep', 'styles'], () => {
-  log('Wire up the bower css, js and app js into html');
-
-  return gulp
-    .src(config.index)
-    .pipe($.inject(gulp.src(config.css)))
-    .pipe(gulp.dest(config.client));
-});
-
-gulp.task('serve-dev', ['inject'], () => {
-  var isDev = true;
-
-  var nodeOptions = {
-    script: config.nodeServer,
-    delayTime: 1,
-    env: {
-      'PORT': port,
-      'NODE_ENV': isDev ? 'dev' : 'build'
+gulp.task('browserSync', function() {
+  browserSync.init({
+    server: {
+      baseDir: ''
     },
-    watch: [config.server]
-  };
+  });
+});
 
-  return $.nodemon(nodeOptions)
-    .on('restart', (event) => {
-      log('*** nodemon restarted');
-      log('files changed on restart: \n' + event);
-    })
-    .on('start', () => {
-      log('*** nodemon started');
-      startBrowserSync();
-    })
-    .on('crash', () => {
-      log('*** nodemon crashed');
-    })
-    .on('exit', () => {
-      log('*** nodemon exited');
-    });
+gulp.task('watcher', ['browserSync', 'styles'], () => {
+  gulp.watch([config.sass], ['styles']);
+  gulp.watch('*.html', browserSync.reload);
+  gulp.watch('*.js', browserSync.reload);
 });
 
 ///////////////

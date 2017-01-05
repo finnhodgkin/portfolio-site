@@ -23,3 +23,33 @@ blockquote:before, blockquote:after,q:before, q:after {
 	content: '';
 	content: none;
 }
+
+$colour1: teal;
+$colour2: purple;
+$colour3: blue;
+
+$margin: 1vw;
+$boxWidth: 20vw;
+$bigWidth: ($boxWidth * 2) + $margin;
+$wrapWidth: ($boxWidth * 4) + ($margin * 4);
+
+#wrap {
+  width: $wrapWidth + $margin;
+  margin: 0 auto;
+}
+
+
+.box {
+  width: $boxWidth;
+  height: 19vw;
+  margin-top: $margin;
+  margin-right: $margin;
+  background-color: $colour2;
+  float: left;
+}
+
+.big {
+  width: $bigWidth;
+  background-color: $colour3;
+  float: left;
+}

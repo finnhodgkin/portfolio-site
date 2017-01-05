@@ -1,5 +1,5 @@
 module.exports = _ => {
-  var temp = './.tmp/';
+  var temp = './css/';
   var store = './store/';
 
   var config = {
@@ -8,7 +8,7 @@ module.exports = _ => {
       './src/**/*.js',
       './*.js'
     ],
-    css: temp + 'styles.css',
+    css: temp + 'style.css',
     index: 'index.html',
     js: [
       '*.js'
@@ -16,6 +16,6 @@ module.exports = _ => {
     sass: store + 'style.scss',
     temp: temp
   };
-  
+
   return config;
 };
