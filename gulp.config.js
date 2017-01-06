@@ -5,8 +5,8 @@ module.exports = _ => {
   var config = {
     //FILES
     alljs: [
-      './src/**/*.js',
-      './*.js'
+      './js/**/*.js',
+      '!./js/polyfill.js'
     ],
     css: temp + 'style.css',
     index: 'index.html',

@@ -1,35 +1,42 @@
+/*global overwrites*/
+
 (function () {
   var boxes = [].slice.call(document.getElementsByClassName('box'));
   var controls = [].slice.call(document.getElementsByClassName('piccontrol'));
   var gallery = document.getElementById('gallery');
   var pic = document.getElementById('pic');
+  var current = '';
 
   boxes.forEach(function (e) {
     e.addEventListener('click', function () {
       gallery.className += ' on';
+      current = boxes.indexOf(e);
       pic.style.backgroundImage = e.style.backgroundImage;
     });
   });
 
   controls.forEach(function (e) {
     e.addEventListener('click', function () {
-      var curr = pic.style.backgroundImage;
       var direction = this.id === 'rightarrow' ? 1 : -1;
-      if (direction === -1 && curr === 'url("images/000.png")') {
-        return;
+      var picture = '';
+      current = current + direction;
+      // if last or first box, cancel image change
+      if (direction === -1 && current < 0) {
+        current = boxes.length - 1;
       }
-      if (direction === 1 && curr === 'url("images/' + ('00' + (boxes.length - 1)).slice(-3) + '.png")') {
-        return;
+      if (direction === 1 && current > boxes.length - 1) {
+        current = 0;
       }
-      var num = ('00' + (+(curr.slice(12, -6)) + direction)).slice(-3);
-      pic.style.backgroundImage = 'url("images/' + num + '.png")';
+      // change picture
+      picture = ('00' + current).slice(-3);
+      console.log(current);
+      pic.style.backgroundImage = 'url("images/' + (overwrites[picture] || picture + '.png') + '")';
     });
   });
 
   gallery.addEventListener('click', function (e) {
-    if (e.target !== this && e.target !== pic) {
-      return;
-    }
+    // if controls then don't close gallery
+    if (e.target !== this && e.target !== pic) { return; }
     gallery.className = gallery.className.replace(' on', '');
   });
 })();

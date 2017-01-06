@@ -15,7 +15,10 @@ gulp.task('vet', () => {
     .pipe($.jscs())
     .pipe($.jshint())
     .pipe($.jshint.reporter('jshint-stylish', {verbose: true}))
-    .pipe($.jshint.reporter('fail'));
+    .pipe($.jshint.reporter('fail'))
+    .pipe(browserSync.reload({
+      stream: true
+    }));
 });
 
 gulp.task('styles', ['clean-styles'], () => {
@@ -38,7 +41,10 @@ gulp.task('clean-styles', () => {
 });
 
 gulp.task('browserSync', function() {
-
+  if(browserSync.active) {
+    return;
+  }
+  
   browserSync.init({
     server: {
       baseDir: ''
@@ -58,10 +64,14 @@ gulp.task('inject', ['styles'], () => {
     .pipe(gulp.dest(''));
 });
 
-gulp.task('watcher', ['browserSync', 'styles'], () => {
+gulp.task('watcher', ['browserSync', 'styles', 'inject'], () => {
   gulp.watch([config.sass], ['inject']);
   gulp.watch('*.html', browserSync.reload);
-  gulp.watch('*.js', ['vet'], browserSync.reload);
+  gulp.watch('./js/**/*.js', ['vet', 'inject']);
+});
+
+gulp.task('build', () => {
+
 });
 
 ///////////////
