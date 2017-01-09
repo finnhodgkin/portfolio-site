@@ -9,7 +9,8 @@
 
   function imageFormatter (num) {
     num = ('00' + (num)).slice(-3);
-    return 'url("images/' + (overwrites[num] || num + '.png') + '")';
+    num = overwrites[num] ? typeof overwrites[num] === 'object' ? overwrites[num][0] : overwrites[num] : num + '.png';
+    return 'url("images/' + num + '")';
   }
 
   function nextImage (cur, dir) {
@@ -47,8 +48,9 @@
   });
 
   gallery.addEventListener('click', function (e) {
+    var text = document.getElementById('closetext');
     // if controls then don't close gallery
-    if (e.target !== this && e.target !== pic) { return; }
+    if (e.target !== this && e.target !== pic && e.target !== text) { return; }
     // close gallery
     gallery.className = gallery.className.replace(' on', '');
   });

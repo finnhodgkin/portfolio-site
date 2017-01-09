@@ -26,7 +26,7 @@ body {
   float: left;
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   -webkit-transition: 0.3s background-color ease;
   transition: 0.3s background-color ease; }
 
@@ -43,3 +43,14 @@ body {
 
 .black {
   background-color: black; }
+
+@media (max-width: 500px) {
+  .box {
+    width: 45vw;
+    height: 45vw; }
+  .big {
+    width: 91vw;
+    height: 46vw; }
+  .extrabig {
+    width: 91vw;
+    height: 91vw; } }
