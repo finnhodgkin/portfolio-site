@@ -8,6 +8,11 @@
   overflow: hidden;
   display: none; }
 
+#closetext {
+  padding-top: 4.5vh;
+  padding-left: 1vw;
+  color: white; }
+
 .on {
   display: inline !important; }
 

@@ -1,16 +1,27 @@
+body {
+  font-family: helvetica, sans-serif;
+  font-size: 15px;
+  font-size: 2vw; }
+  @media (max-width: 700px) {
+    body {
+      font-size: 14px; } }
+  @media (min-width: 800px) {
+    body {
+      font-size: 16px; } }
+
 #wrap {
-  width: 89vw;
+  width: 93vw;
   margin: 0 auto;
   overflow: hidden; }
 
 #innerwrap {
-  width: 101vw; }
+  width: 97vw; }
 
 .box {
-  width: 20vw;
-  height: 20vw;
-  margin-top: 3vw;
-  margin-right: 3vw;
+  width: 22.5vw;
+  height: 22.5vw;
+  margin-top: 1vw;
+  margin-right: 1vw;
   background-color: #eee;
   float: left;
   background-position: center center;
@@ -20,12 +31,12 @@
   transition: 0.3s background-color ease; }
 
 .big {
-  width: 43vw;
+  width: 46vw;
   background-size: cover; }
 
 .extrabig {
-  width: 43vw;
-  height: 43vw; }
+  width: 46vw;
+  height: 46vw; }
 
 .box:hover {
   box-shadow: inset 0 0 0 100vw rgba(0, 0, 0, 0.55); }
