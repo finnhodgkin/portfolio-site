@@ -23,7 +23,7 @@
 $colour1: #eee;
 $colour2: black;
 
-$margin: 1vw;
+$margin: 1.5vw;
 $boxWidth: 22.5vw;
 $bigWidth: ($boxWidth * 2) + $margin;
 $wrapWidth: ($boxWidth * 4) + ($margin * 3);
@@ -87,4 +87,9 @@ body {
     width: $boxWidth * 4 + $margin;
     height: $boxWidth * 4 + $margin;
   }
+
+  #wrap {
+    width: ($boxWidth * 4) + ($margin * 1);
+  }
+
 }

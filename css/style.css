@@ -10,18 +10,18 @@ body {
       font-size: 16px; } }
 
 #wrap {
-  width: 93vw;
+  width: 94.5vw;
   margin: 0 auto;
   overflow: hidden; }
 
 #innerwrap {
-  width: 97vw; }
+  width: 100.5vw; }
 
 .box {
   width: 22.5vw;
   height: 22.5vw;
-  margin-top: 1vw;
-  margin-right: 1vw;
+  margin-top: 1.5vw;
+  margin-right: 1.5vw;
   background-color: #eee;
   float: left;
   background-position: center center;
@@ -31,12 +31,12 @@ body {
   transition: 0.3s background-color ease; }
 
 .big {
-  width: 46vw;
+  width: 46.5vw;
   background-size: cover; }
 
 .extrabig {
-  width: 46vw;
-  height: 46vw; }
+  width: 46.5vw;
+  height: 46.5vw; }
 
 .box:hover {
   box-shadow: inset 0 0 0 100vw rgba(0, 0, 0, 0.55); }
@@ -49,8 +49,10 @@ body {
     width: 45vw;
     height: 45vw; }
   .big {
-    width: 91vw;
-    height: 46vw; }
+    width: 91.5vw;
+    height: 46.5vw; }
   .extrabig {
-    width: 91vw;
-    height: 91vw; } }
+    width: 91.5vw;
+    height: 91.5vw; }
+  #wrap {
+    width: 91.5vw; } }
