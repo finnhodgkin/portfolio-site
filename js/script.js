@@ -2,7 +2,7 @@ var boxes = [].slice.call(document.getElementsByClassName('box'));
 // add image overwrites here: number of box as key, name of image as value
 //
 var overwrites = {
-  '004': ['IMAG0022.jpg', 'IMAG0022-thumb.jpg'],
+  '004': ['IMAG0022.jpg', 'thumbs/IMAG0022-thumb.jpg'],
   '010': 'IMAG0139.jpg'
 };
 

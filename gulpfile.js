@@ -44,7 +44,7 @@ gulp.task('browserSync', function() {
   if(browserSync.active) {
     return;
   }
-  
+
   browserSync.init({
     server: {
       baseDir: ''
@@ -70,9 +70,43 @@ gulp.task('watcher', ['browserSync', 'styles', 'inject'], () => {
   gulp.watch('./js/**/*.js', ['vet', 'inject']);
 });
 
-gulp.task('build', () => {
-
+gulp.task('clean-images', () => {
+  clean('dist/images');
 });
+
+gulp.task('images', ['clean-images'], () => {
+  return gulp.src('./images/*')
+    .pipe($.imagemin())
+    .pipe($.imageResize({
+      width: 2000,
+      height: 2000,
+      crop : false,
+      upscale : false
+    }))
+    .pipe(gulp.dest('dist/images'));
+});
+
+gulp.task('buildimages', ['images'], () => {
+  clean('dist/images/thumbs');
+  gulp.src('./dist/images/*')
+    .pipe($.imageResize({
+      width: 1000,
+      height: 1000,
+      crop : false,
+      upscale : false
+    }))
+    .pipe($.rename(function (f) { f.basename += '-thumb'; }))
+    .pipe(gulp.dest('dist/images/thumbs'));
+});
+
+gulp.task('build', ['buildimages'], () => {
+  return gulp.src('index.html')
+    .pipe($.useref())
+    .pipe($.if('*.js', $.uglify()))
+    .pipe($.if('*.css', $.cssnano()))
+    .pipe(gulp.dest('./dist/'));
+});
+
 
 ///////////////
 
