@@ -3,7 +3,11 @@ var boxes = [].slice.call(document.getElementsByClassName('box'));
 //
 var overwrites = {
   '004': ['IMAG0022.jpg', 'thumbs/IMAG0022-thumb.jpg'],
-  '010': 'IMAG0139.jpg'
+  '010': 'IMAG0139.jpg',
+  '000': 'IMG_2073.jpg',
+  '001': 'IMG_2219.jpg',
+  '002': 'IMG_2475.jpg',
+  '003': 'IMG_2521.jpg'
 };
 
 boxes.forEach(function(e, index) {
