@@ -5,6 +5,7 @@ var config = require('./gulp.config')();
 var del = require('del');
 var $ = require('gulp-load-plugins')({lazy: true});
 var port = process.env.port || config.defaultPort;
+var fs = require('fs');
 
 gulp.task('vet', () => {
   log('Analysing source with JSHint and JSCS');
@@ -105,6 +106,78 @@ gulp.task('build', ['buildimages'], () => {
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.cssnano()))
     .pipe(gulp.dest('./dist/'));
+});
+
+gulp.task('buildImageOverwrites', () => {
+  fs.readdir('images/', (err, files) => {
+    if (err) { return console.error(err); }
+
+    files = swapIndexBy1(findVal(files, '_B.'), files);
+
+    let filtered = files.filter((e, i, a) => {
+      for (let b = 0; b < a.length; b++) {
+        if (('00' + b).slice(-3) + '.png' === e) {
+          return false;
+        }
+      }
+      return true;
+    });
+
+    //SWAP item in array with neightbour in direction specified
+    function swapIndexBy1(index, array, direction) {
+      let dir = direction && direction > 0 ? 1 : -1;
+      let arr = [].concat(array);
+      if (index <= 0 && dir === -1 ||
+          index < 0 ||
+          index >= array.length ||
+          index === array.length - 1 && dir === 1) {
+            return arr;
+          }
+      let tmp = arr[index];
+      arr[index] = arr[index + dir];
+      arr[index + dir] = tmp;
+      return arr;
+    }
+
+    //FIND a search value within an array string
+    function findVal(array, value, afterIndex) {
+      if (!afterIndex) {
+        afterIndex = 0;
+      }
+      return array.indexOf(array.find((e, i) => { return e.includes(value) && i > afterIndex; }));
+    }
+
+    filtered = filtered.map((e, i) => {
+      return ('00' + (i + (files.length - filtered.length))).slice(-3) + '\': \'' + e;
+    });
+
+    //
+    // console.log(replace);
+    let replace = `var overwrites = {\n  \'${filtered.join('\',\n  \'')}\'\n};`;
+    gulp.src('js/script.js')
+      .pipe($.replace(/(\/\/OVERWRITES)([\S\s]*)(\/\/ENDOVERWRITES)/i, `$1\n${replace}\n$3`))
+      .pipe(gulp.dest('./js/'));
+
+    replace = [];
+    files.forEach((e, i, a) => {
+      if (e.includes('_B.')) {
+        replace.push('<div class="box extrabig"></div>');
+        return;
+      }
+      if (e.includes('_L.')) {
+        replace.push('<div class="box big"></div>');
+        return;
+      }
+      replace.push('<div class="box"></div>');
+    });
+
+    gulp.src('index.html')
+      .pipe($.replace(
+        /(<\!\-\-boxes\-\->)([\S\s]*)(<\!\-\-endboxes\-\->)/i,
+        `$1\n${replace.join('\n')}\n      $3`
+      ))
+      .pipe(gulp.dest(''));
+  });
 });
 
 
