@@ -112,8 +112,8 @@ gulp.task('buildImageOverwrites', () => {
   fs.readdir('images/', (err, files) => {
     if (err) { return console.error(err); }
 
-    files = swapIndexBy1(findVal(files, '_B.'), files);
-
+    console.log(files);
+    files = moveInArray(files, findVal(files, '_B.'), 4);
     let filtered = files.filter((e, i, a) => {
       for (let b = 0; b < a.length; b++) {
         if (('00' + b).slice(-3) + '.png' === e) {
@@ -123,19 +123,33 @@ gulp.task('buildImageOverwrites', () => {
       return true;
     });
 
-    //SWAP item in array with neightbour in direction specified
-    function swapIndexBy1(index, array, direction) {
-      let dir = direction && direction > 0 ? 1 : -1;
+    //MOVE item/s within array in direction
+    function moveInArray(array, index, size, direction) {
+      size = size || 1;
+      direction = direction || -1;
+      index = index || 1;
       let arr = [].concat(array);
-      if (index <= 0 && dir === -1 ||
-          index < 0 ||
-          index >= array.length ||
-          index === array.length - 1 && dir === 1) {
-            return arr;
-          }
-      let tmp = arr[index];
-      arr[index] = arr[index + dir];
-      arr[index + dir] = tmp;
+      let add = arr.splice(index, size);
+      if (index < 0 || index > array.length - 1) {
+        return arr;
+      } else if (index + direction < 0) {
+        return add.concat(arr);
+      } else if (index + direction + (size - 1) > array.length - 1) {
+        return arr.concat(add);
+      }
+      arr = arr.slice(0, index + direction)
+            .concat(add)
+            .concat(arr.slice(index + direction));
+      return arr;
+    }
+
+    //splice in items a chosen number of times
+    function addToArray(array, index, toAdd, times) {
+      let arr = [].concat(array);
+      toAdd = toAdd || '';
+      times -= 1;
+      arr.splice(index + 1, 0, toAdd);
+      if (times > 0) { return addToArray(arr, index, toAdd, times); }
       return arr;
     }
 
@@ -144,7 +158,9 @@ gulp.task('buildImageOverwrites', () => {
       if (!afterIndex) {
         afterIndex = 0;
       }
-      return array.indexOf(array.find((e, i) => { return e.includes(value) && i > afterIndex; }));
+      return array.indexOf( array.find((e, i) => {
+        return e.includes(value) && i > afterIndex;
+      }) );
     }
 
     filtered = filtered.map((e, i) => {
@@ -161,14 +177,14 @@ gulp.task('buildImageOverwrites', () => {
     replace = [];
     files.forEach((e, i, a) => {
       if (e.includes('_B.')) {
-        replace.push('<div class="box extrabig"></div>');
+        replace.push('      <div class="box extrabig"></div>');
         return;
       }
       if (e.includes('_L.')) {
-        replace.push('<div class="box big"></div>');
+        replace.push('      <div class="box big"></div>');
         return;
       }
-      replace.push('<div class="box"></div>');
+      replace.push('      <div class="box"></div>');
     });
 
     gulp.src('index.html')
