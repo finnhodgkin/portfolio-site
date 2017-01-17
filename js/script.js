@@ -2,10 +2,10 @@
 var overwrites = {
   '010': 'IMAG0022_L.jpg',
   '011': 'IMG_2073_B.JPG',
-  '012': 'IMAG0139.jpg',
-  '013': 'IMG_2219.JPG',
-  '014': 'IMG_2475.JPG',
-  '015': 'IMG_2521.JPG'
+  '012': 'IMG_2219_B.JPG',
+  '013': 'IMG_2475.JPG',
+  '014': 'IMG_2521.JPG',
+  '015': 'IMAG0139.jpg'
 };
 //ENDOVERWRITES
 
